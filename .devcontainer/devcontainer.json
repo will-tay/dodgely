@@ -1,0 +1,27 @@
+{
+  "name": "dodgely",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/dodgely",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "24",
+      "pnpmVersion": "latest"
+    },
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["anthropic.claude-code"]
+    }
+  },
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Express server",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "sudo chown -R vscode:vscode /home/vscode/.claude && pnpm install",
+  "remoteUser": "vscode"
+}
