@@ -2,6 +2,7 @@ import express from "express";
 import { eq, sql } from "drizzle-orm";
 import { db } from "./db/index.js";
 import { generateSlug } from "./slug.js";
+import { validateUrl } from './utils.js';
 import { links } from "./db/schema.js";
 
 const app = express();
@@ -17,6 +18,9 @@ app.get("/", (_req, res) => {
 
 app.post("/api/links", async (req, res) => {
   const url = req.body.url;
+  const error = validateUrl(url, req.host);
+  if (error) return res.status(400).json({ error });
+
   for (let attempt = 0; attempt < 5; attempt++) {
     const slug = generateSlug();
     try {
